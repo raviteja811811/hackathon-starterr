@@ -15,12 +15,10 @@ pipeline {
         }
         stage('Scan Images') {
             steps {
-                    sh 'trivy image -d'
-                    def vulnerabilities = sh(script: 'trivy image -f json', returnStdout: true).trim()
-                    if (vulnerabilities.contains('HIGH') || vulnerabilities.contains('CRITICAL'))                
-                }  
-            }
+                    sh 'trivy image -d'          
+            }  
         }
     }
+}
 
 
