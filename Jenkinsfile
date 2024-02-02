@@ -5,7 +5,7 @@ pipeline {
         stage('vcs') {
             steps {
                 git url: 'https://github.com/raviteja811811/hackathon-starterr.git',
-                    branch: 'declarative'
+                    branch: 'try'
             }
         }
         stage('package') {
