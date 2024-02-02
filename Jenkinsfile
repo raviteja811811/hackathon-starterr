@@ -1,24 +1,26 @@
 pipeline {
     agent { label 'JDK_8' }
+    triggers { pollSCM ('H/30 * * * *') }
     stages {
         stage('vcs') {
             steps {
-                git url: 'https://github.com/raviteja811811/hackathon-starterr.git',
-                branch: 'try'
+                git url: 'https://github.com/khajadevopsmarch23/game-of-life.git',
+                    branch: 'declarative'
             }
         }
-         stage('Build') {
-            steps {                
-                    sh 'npm install'
-                    sh 'npm run build'
+        stage('package') {
+            tools {
+                jdk 'JDK_8_UBUNTU'
             }
-        }
-        stage('Scan Images') {
             steps {
-                    sh 'trivy image -d'          
-            }  
+                sh 'mvn package'
+            }
+        }
+        stage('post build') {
+            steps {
+                archiveArtifacts artifacts: '**/target/gameoflife.war',
+                                 onlyIfSuccessful: true
+                junit testResults: '**/surefire-reports/TEST-*.xml'
+            }
         }
     }
-}
-
-
